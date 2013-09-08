@@ -1,33 +1,104 @@
-=========================================
-Python2.5から3.3で動作するツールの作り方
-=========================================
+===========================================================
+Python **2.5** からPython **3.3** で 動作するツールの作り方
+===========================================================
 
 .. ================================================================
 .. Introduction
 .. ================================================================
 .. 5分
 
-Introduction
-============
-
-sphinx-intlを題材に、Python2.5からPython3.3までの環境で動作するプログラムの書き方について紹介します。
 
 About Me
 =========
+.. figure:: images/face.png
+
 http://about.me/shimizukawa
-
-Books
-
-* Expert Python Programming (translate into Japanese), 2010.
-* Python Professional Programming (chapter 4, 7), 2012.
 
 Activity
 
-* Sphinx-users.jp principal
 * Sphinx co-committer
-* Pillow ""the successor of PIL"" win32/64 egg maintainer
-* PyCon JP 2012 vice-chairman
-* Python mini hack-a-thon steering member
+* Sphinx-users.jp chairman
+* PyCon JP 2011,2012 vice-chairman
+
+.. s6:: effect slide
+
+.. s6:: styles
+
+    'div[0]': {width:'15%', position:'absolute', top:'0', right:'1em'},
+
+
+Books
+======
+
+* エキスパートPythonプログラミング (和訳)
+
+  .. figure:: images/book-epp.jpg
+
+* Pythonプロフェッショナルプログラミング (2章分)
+
+  .. figure:: images/book-pypro.png
+
+
+.. s6:: effect slide
+
+.. s6:: styles
+
+   'ul/li[0]/p': {width: '50%', marginBottom:'0.5em'},
+   'ul/li[0]/div': {width:'30%', position:'absolute', left:'55%', top:'1em'},
+   'ul/li[1]': {marginLeft: '2em'},
+   'ul/li[1]/p': {width: '50%'},
+   'ul/li[1]/div': {width:'30%', position:'absolute', right:'0', top:'4em'},
+   'ul/li[1]/ul/li[0]': {display:'none'},
+   'ul': {fontSize:'70%'},
+
+.. s6:: actions
+
+   ['ul/li[1]/ul/li', 'fade in', '0.3'],
+
+   * The books mention to Sphinx and Documentations.
+
+   * "Python Professional Programming" was already translated into
+     'simple chineese charactors' and will publish in June. (This is chneese
+     version book name).
+
+
+.. Learning Sphinx
+.. ================
+.. 
+.. * Sphinxをはじめよう (1.5章分)
+.. 
+..   .. figure:: images/book-sphinx.jpg
+.. 
+.. * 販売開始は **本日** から！！
+.. 
+..   * オライリー・ジャパンさんより
+..   * 電子書籍のみ
+..   * 金額？
+
+
+Abstract
+=========
+
+趣旨:
+  多数のPythonバージョンで動作するコードの書き方
+
+対象環境:
+  Python2.5 - Python3.3 (3.0を除く)
+
+題材:
+  sphinx-intl
+
+
+.. s6:: effect slide
+
+.. s6:: styles
+
+   'dl': {fontSize:'90%'},
+
+.. speech::
+
+   sphinx-intlを題材に、Python2.5からPython3.3までの環境で動作するプログラムの書き方について紹介します。
+
 
 Motivation
 ===========
