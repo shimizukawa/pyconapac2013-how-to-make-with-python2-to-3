@@ -20,7 +20,7 @@ Activity
 * Sphinx-users.jp chairman
 * PyCon JP 2011,2012 vice-chairman
 
-.. s6:: effect slide
+.. s7:: effect slide
 
 .. s6:: styles
 
@@ -37,9 +37,6 @@ Books
 * Pythonプロフェッショナルプログラミング (2章分)
 
   .. figure:: images/book-pypro.png
-
-
-.. s6:: effect slide
 
 .. s6:: styles
 
@@ -59,28 +56,52 @@ Books
 
    * "Python Professional Programming" was already translated into
      'simple chineese charactors' and will publish in June. (This is chneese
-     version book name).
 
+中国語版
+================
 
-.. Learning Sphinx
-.. ================
-.. 
-.. * Sphinxをはじめよう (1.5章分)
-.. 
-..   .. figure:: images/book-sphinx.jpg
-.. 
-.. * 販売開始は **本日** から！！
-.. 
-..   * オライリー・ジャパンさんより
-..   * 電子書籍のみ
-..   * 金額？
+.. figure:: images/book-pypro-china.png
+   :width: 50%
+   :align: center
 
+   10月に発売予定らしい
+
+Sphinxをはじめよう
+==================
+
+.. figure:: images/book-learn-sphinx.jpg
+
+   Sphinxをはじめよう
+
+* 謎の動物
+* 世界初のSphinx本（多分）
+* オライリー・ジャパンさん
+* 電子書籍
+* 100P弱相当
+* 1,600円
+* 販売日： **本日** から！！
+
+.. s6:: styles
+
+   'p': {width: '50%', marginBottom:'0.5em'},
+   'div': {width:'40%', position:'absolute', left:'58%', top:'1em'},
+   'ul': {marginLeft: '2em'},
+   'ul': {width: '50%'},
+   'ul': {width:'30%', position:'absolute', right:'0', top:'4em'},
+   'ul': {fontSize:'70%'},
 
 Abstract
 =========
 
-趣旨:
-  多数のPythonバージョンで動作するコードの書き方
+.. s6:: styles
+
+   'h2': {textAlign:'center', margin:'30% auto', lineHeight:'1.5em'}
+
+Abstract
+=========
+
+目的
+  多数のPythonバージョンで動作するようにコードを書く
 
 対象環境:
   Python2.5 - Python3.3 (3.0を除く)
@@ -88,28 +109,11 @@ Abstract
 題材:
   sphinx-intl
 
-
 .. s6:: effect slide
 
 .. s6:: styles
 
    'dl': {fontSize:'90%'},
-
-.. speech::
-
-   sphinx-intlを題材に、Python2.5からPython3.3までの環境で動作するプログラムの書き方について紹介します。
-
-
-Motivation
-===========
-
-* sphinx-intlはSphinxの国際化機能サポートツール
-* SphinxがPython2.5から3.3まで対応している(3.0除く)
-* 同じバージョン対応が必要
-* 2to3でコード変換する方法はテストなど面倒
-* sixを使って2to3変換無しで動作させよう
-* sixでサポートしていない一部の非互換コードは自作
-
 
 .. ================================================================
 .. What is sphinx-intl
@@ -117,24 +121,41 @@ Motivation
 .. 5分
 
 What is sphinx-intl
-===================
+====================
 
-* sphinx-intlはどんなツール？
-* 機能:
+* Sphinxの国際化機能サポートツール
 
   * potから言語別poの生成、更新、ビルド
   * transifexサポート: potからtransifex設定ファイルの生成
 
-* 行数:
+.. todo:: sphinxとpotの絵
+
+.. sphinx-intlがなんのためのツールかということを端的に説明したいが、この文面だと長い：「sphinx-users.jpで使用している手法について紹介します。この方法は、ドキュメントの更新があれば自動的にpoファイルを更新してくれるし、翻訳文を更新すれば自動的にサイトを更新してくれる全自動の手法です。この手法の中核にあるのがsphinx-intlです。」
+
+.. s6:: effect slide
+
+Motivation
+===========
+
+* SphinxがPython2.5から3.3まで対応(3.0除く)
+* sphinx-intlも同じバージョン対応が必要
+
+
+Detail of sphinx-intl
+======================
+
+* sphinx-intlの行数:
 
   * 本体: 577行 （docstring含む）
   * ドキュメント: 229行 （README等）
   * テスト: 500行 （ユーティリティ含む）
 
-.. todo:: 全体把握のため、簡単なツリー構造あったほうがいいかな
+* sphinx-intlの構成:
 
+  * TODO: 簡単なツリー構造を書く
 
-.. sphinx-intlがなんのためのツールかということを端的に説明したいが、この文面だと長い：「sphinx-users.jpで使用している手法について紹介します。この方法は、ドキュメントの更新があれば自動的にpoファイルを更新してくれるし、翻訳文を更新すれば自動的にサイトを更新してくれる全自動の手法です。この手法の中核にあるのがsphinx-intlです。」
+.. s6:: effect slide
+
 
 
 .. ================================================================
@@ -145,34 +166,136 @@ What is sphinx-intl
 Difference from Python2.5 to Python 3.3
 =======================================
 
-ライブラリや関数の違いを吸収するのは簡単ですが、文法の違いを吸収するのは手間がかかります。どこが違って、どうやって吸収するのかについて紹介します。
+.. s6:: styles
 
-* Python2か3かを見分ける
+   'h2': {textAlign:'center', margin:'30% auto', lineHeight:'1.5em'}
 
-  * ``sys.version_info < (3, 0)``
-  * Python2ならTrue
+Difference from Python2.5 to Python 3.3
+=======================================
 
 * ライブラリの違い
-
-  * optparse(まだある)とargparse(2.7以降, 3.2以降)
-  * OrderedDict(2.7から)
-
-* 関数や属性の違い
-
-  * unicodeとstrとbytes (2と3で異なる)
-  * func_code (2のみ)と__code__ (2.6以降)
-  * execfile消滅 (3.0以降)
-  * callable消滅 (3.0, 3.1のみ)
-
+* 関数の違い
 * 文法の違い
 
-  * with文 (2.5で__future__で提供、2.6以降標準)
-  * print文とprint関数 (3.0/2.6)
-  * u'' と b'' (3.3/3.0/2.6)
+sphinx-intlが使っている範囲で紹介
+
+.. speech:: ライブラリや関数の違いを吸収するのは簡単ですが、文法の違いを吸収するのは手間がかかります。どこが違って、どうやって吸収するのかについて、sphinx-intlが使用している範囲で紹介します。
+
+Python2か3かを見分ける
+======================
+
+バージョン番号判別
+
+.. code-block:: pycon
+
+   >>> PY2 = sys.version_info < (3, 0)
+   >>> PY3 = not PY2
+   >>> PY2
+   True
+   >>> PY3
+   False
+
+.. s6:: effect slide
+
+ライブラリの違い
+================
+
+* optparse(まだある)とargparse(2.7以降, 3.2以降)
+* OrderedDict(2.7から)
+
+.. s6:: effect slide
+
+関数や属性の変更
+=================
+
+* unicodeとstrとbytes (2と3で異なる)
+* func_code (2のみ)と__code__ (2.6以降)
+* callable消滅 (3.0, 3.1のみ、3.2で復活)
+* execfile消滅 (3.0以降)
+
+.. s6:: effect slide
+
+関数: unicodeとstrとbytes
+==========================
+
+2と3で異なる
+
+.. todo:: code
+
+.. s6:: effect slide
+
+属性: func_codeと__code__
+==========================
+
+* func_code: 2のみ
+* __code__: 2.6以降
+
+.. todo:: code
+
+.. s6:: effect slide
+
+関数: callable消滅
+===================
+
+* 3.0で組み込み関数から消えた
+* 3.2で復活した
+
+.. todo:: code
+
+.. s6:: effect slide
+
+関数: execfile消滅
+==================
+
+* 3.0で組み込み関数から消えた
+
+.. todo:: code
+
+.. s6:: effect slide
+
+文法の違い
+==========
+
+* with文
+* print文とprint関数
+* u'' と b''
+
+.. todo:: code
+
+.. s6:: effect slide
+
+文法: with文
+=============
+
+* 2.5から__future__で提供、2.6から標準
+
+.. todo:: code
+
+.. s6:: effect slide
+
+文法: print文とprint関数
+========================
+
+* 2.6から__future__でprint関数提供、3.0から標準
+
+.. todo:: code
+
+.. s6:: effect slide
+
+文法: u'' と b''
+=================
+
+* ``b''`` は2.6から使えるが無視される
+* ``u''`` は3.0で消滅、3.2で復活
+
+.. todo:: code
+
+.. s6:: effect slide
 
 
 .. todo:: 文法の違いとしてsphinx-intlで扱っているものだけでよいか？もっと一般的な何かを紹介したほうがよいか？割り算の整数？next()
 
+.. s6:: effect slide
 
 .. ================================================================
 .. How to compatible with both python2 and 3
@@ -182,7 +305,20 @@ Difference from Python2.5 to Python 3.3
 How to compatible with both python2 and 3
 =========================================
 
-2to3を使ってコード変換する方法と、sixを使って共通コードで動作させる方法があります。一長一短ありますが、どのようなときにどちらを使うべきかなど紹介します。
+.. speech:: 2to3を使ってコード変換する方法と、sixを使って共通コードで動作させる方法があります。一長一短ありますが、どのようなときにどちらを使うべきかなど紹介します。
+
+.. s6:: styles
+
+   'h2': {textAlign:'center', margin:'30% auto', lineHeight:'1.5em'}
+
+.. s6:: effect slide
+
+How to compatible with both python2 and 3
+=========================================
+
+* 2to3を使う
+* 自力で両対応のコードを書く
+* sixを使う
 
 2to3を使う
 ===========
@@ -201,10 +337,12 @@ Python3にはlib2to3がある
 * Python3でだけエラーがある場合、変換後のコードで問題があると面倒
   (どう変換されるか予測してPython2のコードを書く必要があったり)
 
-2to3を使わない
-===============
+.. s6:: effect slide
 
 両方で解釈できる方法で書く
+==========================
+
+2to3を使わず、両方で解釈できる方法で書く。
 
 良いこと
 
@@ -217,14 +355,17 @@ Python3にはlib2to3がある
 * Python2.5を投げ捨てたくなる
 * 差異の吸収を自分でやる手間がかかる
 
+.. s6:: effect slide
 
 sphinx-intlはどうしたか？
 ==========================
 
-* 最初はsix無しで書いていた
+* 最初は自力で両対応コードを書いていた
 * printとexecの互換実装が面倒
-* six万歳
-* sixでも提供されていないexecfileは自力で対応
+* エクササイズのつもりだったけど面倒になった
+* 諦めてsixを導入
+
+.. s6:: effect slide
 
 six
 =====
@@ -234,6 +375,15 @@ six
 * 移動したり名前が変わったり消えたり増えたりしたパッケージ、モジュールの互換レイヤ
 * 移動や名前変更は内部でバージョン判別して呼び直している（要コードサンプル）
 * 消えたり増えたりは、同一機能を提供（要コードサンプル）
+
+.. s6:: effect slide
+
+避けられない自力対応
+====================
+
+* sixでも提供されていないexecfileは自力で対応
+
+.. s6:: effect slide
 
 
 避けられない2to3 (conf.py)
@@ -245,6 +395,7 @@ six
 
 こういうこともあるんだね
 
+.. s6:: effect slide
 
 .. ================================================================
 .. パッケージングにおける課題
@@ -254,60 +405,61 @@ six
 パッケージングにおける課題
 ==========================
 
-2013/7/1現在、Pythonのパッケージングは混乱しています。とりあえず今どうすると安定したパッケージ供給が出来るのか紹介します。
+.. speech:: 2013/7/1現在、Pythonのパッケージングは混乱しています。とりあえず今どうすると安定したパッケージ供給が出来るのか紹介します。
+
+.. s6:: styles
+
+   'h2': {textAlign:'center', margin:'30% auto', lineHeight:'1.5em'}
+
+.. s6:: effect slide
+
+パッケージングにおける課題
+==========================
+
+* パッケージングツールの変遷
+* setuptoolsを使うか、使わないか
+* Python2と3で動作するsetup.pyを作る
+
+
+.. s6:: effect slide
 
 パッケージングツールの変遷
 ===================================
 
-* Python標準はdistutils、色々足りないしeasy_install的なのが無い
-* setuptoolsがeasy_installを提供
-* pipはsetuptoolsを使って便利なインストーラコマンドを提供
-* setuptoolsをPython3対応させたdistributeがデファクトに
+1. Python標準はdistutils、色々足りないしeasy_install的なのが無い
+2. setuptoolsがeasy_installを提供
+3. pipはeasy_installより便利なコマンドを提供
+4. setuptoolsをPython3対応させたdistributeがデファクトに
 
-2 years ago (2011/9)
-=====================
+ここまでがPyCon JP 2011の頃。
+
+.. s6:: effect slide
+
+2012年
+======
 
 * setuptoolsはもう更新されてないから ``distribute`` 使おう！
 * Python3.3で提供される ``packaging`` を使おう！
+* packagingがPython3.3リリース直前に消滅
 
+これがPyCon JP 2012の前後。
 
-1 years ago (2012/9)
-=====================
+.. s6:: effect slide
 
-* setuptoolsはもう更新されてないから ``distribute`` 使おう！
-* packagingがPython3.3リリース直前に消滅..
+2013年
+======
 
-6 months ago (2013/3)
-======================
+* ``distlib`` 登場。packagingで不足していた下位レイヤ。Python3.4同梱予定。
+* ``wheel`` 登場。eggに代わるPython標準のバイナリ形式。distlibと合流。
+* ``distribute`` 廃止！ ``setuptools`` に統合。setuptoolsがPython3対応に！
 
-* setuptoolsはもう更新されてないから ``distribute`` 使おう！
-* ``distlib`` リリース、packagingで不足していた下位レイヤーを提供
-* ``wheel`` というeggに代わるPython標準のバイナリフォーマット登場
-
-1 month ago (2013/8)
-=====================
-
-* distributeは廃止されsetuptoolsに統合されPython3にも対応！ ``setuptools`` を使おう！
-* ``distlib`` がsetuptoolsの機能をほぼ全て提供しつつある（互換性は基本的にない）
-* ``distlib`` は2014年頭にリリースのPython3.4に同梱予定
-
-Today (2013)
-=============
-
-* setuptoolsが0.7以降リリース乱発、もう1.1.4まで来た
-* setuptools大丈夫か？はやくdistlib使える世界になって欲しい
-
-
-setuptoolsを使うか、使わないか
-===============================
-
-* 今はまだsetuptoolsがデファクトスタンダード
-* setuptools自体は既存資産を使うために今後も必要
-* まだしばらくはsetuptoolsとつきあっていく必要あり
+**setuptoolsを使おう！** （distlibの世界になるまでは）
 
 詳しくは `PyCon APAC 2013 DAY1, パッケージングの今と未来`_ の発表を参照
 
 .. _PyCon APAC 2013 DAY1, パッケージングの今と未来: session-14-1110-rooma0715-ja1-ja
+
+.. s6:: effect slide
 
 Python2と3で動作するsetup.pyを作る
 ===================================
@@ -315,4 +467,20 @@ Python2と3で動作するsetup.pyを作る
 * setup.pyはPython2,3互換コードで書く
 * 特定バージョンの場合だけ依存パッケージをインストールする
 * 特定バージョンの場合、依存パッケージのバージョンを指定する
+
+.. s6:: effect slide
+
+まとめ
+=======
+
+.. s6:: styles
+
+   'h2': {textAlign:'center', margin:'30% auto', lineHeight:'1.5em'}
+
+.. s6:: effect slide
+
+まとめ
+=======
+
+* 
 
