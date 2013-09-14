@@ -165,15 +165,15 @@ Detail of sphinx-intl
 .. ================================================================
 .. 15分
 
-Difference from Python2.5 to Python 3.3
-=======================================
+Differences from Python2.5 to Python 3.3
+============================================
 
 .. s6:: styles
 
    'h2': {textAlign:'center', margin:'30% auto', lineHeight:'1.5em'}
 
-Difference from Python2.5 to Python 3.3
-=======================================
+Differences from Python2.5 to Python 3.3
+============================================
 
 * ライブラリの違い
 * 関数の違い
@@ -188,7 +188,7 @@ sphinx-intlが使っている範囲で紹介
 Python2か3かを見分ける
 ======================
 
-バージョン番号判別
+バージョン判別フラグを用意して、以降のコードの書き分けに利用。
 
 .. code-block:: pycon
 
@@ -209,6 +209,46 @@ Python2か3かを見分ける
 
 .. s6:: effect slide
 
+
+optparseとargparse
+====================
+
+* optparse: 2.5から3.3の全てで使える
+* でもoptparseはAPI設計が古いので不便
+* argparseが使いやすい
+* argparse: 2.7以降, 3.2以降
+
+他のバージョン向けにPyPIで提供している:
+
+.. code-block:: bash
+
+   $ pip install argparse
+
+.. s6:: effect slide
+
+OrderedDict
+============
+
+* 辞書なのに追加した順序を維持してくれる
+* 2.7から使える
+
+他のバージョン向けにPyPIで提供している:
+
+.. code-block:: bash
+
+   $ pip install ordereddict
+
+Pythonバージョン別で使い分ける:
+
+.. code-block:: python
+
+   if sys.version_info < (2, 7):
+       from ordereddict import OrderedDict
+   else:
+       from collections import OrderedDict
+
+.. s6:: effect slide
+
 関数や属性の変更
 =================
 
@@ -225,20 +265,26 @@ Python2か3かを見分ける
 * Python2の str() は Python3の bytes()
 * Python2の unicode() は Python3の str()
 
+.. todo:: 使い方の例が必要?
+
 .. code-block:: python
 
-   if PY3:
-       def b(s):
-           return s.encode("latin-1")
-       def u(s):
-           return s
-   else:
+   if PY2:
        def b(s):
            return s
        def u(s):
            return unicode(s, "unicode_escape")
+   else:
+       def b(s):
+           return s.encode("latin-1")
+       def u(s):
+           return s
 
 .. s6:: effect slide
+
+.. s6:: styles
+
+   'div': {fontSize:'70%'}
 
 属性: func_codeと__code__
 ==========================
@@ -250,16 +296,16 @@ Python2か3かを見分ける
    def spam(name, age, kind=None):
        pass
 
-関数の引数の数や変数前とか色々取れる。
+関数の引数の数や変数名とか色々取れる。
 
 .. code-block:: python
 
-   if PY3:
-       argcount = spam.__code__.co_argcount
-       varnames = spam.__code__.co_varnames[:argcount]
-   else:
+   if PY2:
        argcount = spam.func_code.co_argcount
        varnames = spam.func_code.co_varnames[:argcount]
+   else:
+       argcount = spam.__code__.co_argcount
+       varnames = spam.__code__.co_varnames[:argcount]
 
 .. s6:: effect slide
 
@@ -271,7 +317,7 @@ Python2か3かを見分ける
 関数: callable消滅
 ===================
 
-* 3.0で組み込み関数から消えた
+* 3.0, 3.1で組み込み関数から消えた
 * 3.2で復活した
 
 .. code-block:: python
@@ -341,25 +387,129 @@ execもPy3で文から式に変わりました。
 
 .. s6:: effect slide
 
-文法: print文とprint関数
-========================
+文法: print文とprint関数1
+==========================
 
-* 2.6から__future__でprint関数提供、3.0から標準
+Python2のprint文の例
+
+.. code-block:: pycon
+
+   >>> print 'spam', 'egg', 'ham'
+   spam egg ham
+
+
+Python2で括弧を付けるとタプルをprintしてしまう↓
 
 .. code-block:: pycon
 
    >>> print('spam', 'egg', 'ham')
    ('spam', 'egg', 'ham')
 
-Python2ではタプルをprintしてしまう
+Python3では普通にプリントされる
+
+.. code-block:: pycon
+
+   >>> print('spam', 'egg', 'ham')
+   spam egg ham
+
+.. s6:: styles
+
+   'div': {fontSize:'70%'}
+
+文法: print文とprint関数2
+==========================
+
+Python2系でのprint文の例:
+
+.. code-block:: python
+
+    print >>sys.stderr, 'image:', filename, 'loading...',
+    data = load_image(filename)
+    print('done.')
+
+Python3系のprint関数だと:
+
+.. code-block:: python
+
+    print('image:', filename, 'loading...', end=' ', file=sys.stderr)
+    data = load_image(filename)
+    print('done.')
+
+
+printを文ではなく式として解釈させる(2.6, 2.7)
 
 .. code-block:: python
 
    from __future__ import print_function
 
-2.5では使えない。print関数は仕様が多いので、互換機能実装はとても面倒。
 
 .. s6:: effect slide
+
+.. s6:: styles
+
+   'div': {fontSize:'65%'},
+   'p': {fontSize:'65%', margin: '0.5em'},
+
+
+文法: print関数実装例
+==========================
+
+しかし、print関数は仕様が多いので、互換機能実装はとても面倒。print関数実装例:
+
+.. code-block:: python
+
+   def print_(*args, **kwargs):
+       fp = kwargs.pop("file", sys.stdout)
+       if fp is None:
+           return
+       def write(data):
+           if not isinstance(data, basestring):
+               data = str(data)
+           fp.write(data)
+       want_unicode = False
+       sep = kwargs.pop("sep", None)
+       if sep is not None:
+           if isinstance(sep, unicode):
+               want_unicode = True
+           elif not isinstance(sep, str):
+               raise TypeError("sep must be None or a string")
+       end = kwargs.pop("end", None)
+       if end is not None:
+           if isinstance(end, unicode):
+               want_unicode = True
+           elif not isinstance(end, str):
+               raise TypeError("end must be None or a string")
+       if kwargs:
+           raise TypeError("invalid keyword arguments to print()")
+       if not want_unicode:
+           for arg in args:
+               if isinstance(arg, unicode):
+                   want_unicode = True
+                   break
+       if want_unicode:
+           newline = unicode("\n")
+           space = unicode(" ")
+       else:
+           newline = "\n"
+           space = " "
+       if sep is None:
+           sep = space
+       if end is None:
+           end = newline
+       for i, arg in enumerate(args):
+           if i:
+               write(sep)
+           write(arg)
+       write(end)
+
+.. **
+
+.. s6:: effect slide
+
+.. s6:: styles
+
+   'div': {fontSize:'60%'},
+   'p': {fontSize:'60%', margin: '0.5em'},
 
 
 .. ================================================================
