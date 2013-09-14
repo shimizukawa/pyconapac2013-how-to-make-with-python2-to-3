@@ -20,7 +20,7 @@ Activity
 * Sphinx-users.jp chairman
 * PyCon JP 2011,2012 vice-chairman
 
-.. s7:: effect slide
+.. s6:: effect slide
 
 .. s6:: styles
 
@@ -78,8 +78,8 @@ Sphinxをはじめよう
 * オライリー・ジャパンさん
 * 電子書籍
 * 100P弱相当
-* 1,600円
-* 販売日： **本日** から！！
+* 1,680円
+* **Now ON SALE !!**
 
 .. s6:: styles
 
@@ -141,6 +141,8 @@ Motivation
 * sphinx-intlも同じバージョン対応が必要
 
 
+.. s6:: effect slide
+
 Detail of sphinx-intl
 ======================
 
@@ -181,6 +183,8 @@ sphinx-intlが使っている範囲で紹介
 
 .. speech:: ライブラリや関数の違いを吸収するのは簡単ですが、文法の違いを吸収するのは手間がかかります。どこが違って、どうやって吸収するのかについて、sphinx-intlが使用している範囲で紹介します。
 
+.. s6:: effect slide
+
 Python2か3かを見分ける
 ======================
 
@@ -218,21 +222,51 @@ Python2か3かを見分ける
 関数: unicodeとstrとbytes
 ==========================
 
-2と3で異なる
+* Python2の str() は Python3の bytes()
+* Python2の unicode() は Python3の str()
 
-.. todo:: code
+.. code-block:: python
+
+   if PY3:
+       def b(s):
+           return s.encode("latin-1")
+       def u(s):
+           return s
+   else:
+       def b(s):
+           return s
+       def u(s):
+           return unicode(s, "unicode_escape")
 
 .. s6:: effect slide
 
 属性: func_codeと__code__
 ==========================
 
-* func_code: 2のみ
-* __code__: 2.6以降
+関数オブジェクトの属性。
 
-.. todo:: code
+.. code-block:: python
+
+   def spam(name, age, kind=None):
+       pass
+
+関数の引数の数や変数前とか色々取れる。
+
+.. code-block:: python
+
+   if PY3:
+       argcount = spam.__code__.co_argcount
+       varnames = spam.__code__.co_varnames[:argcount]
+   else:
+       argcount = spam.func_code.co_argcount
+       varnames = spam.func_code.co_varnames[:argcount]
 
 .. s6:: effect slide
+
+.. s6:: styles
+
+   'div': {fontSize:'75%'}
+
 
 関数: callable消滅
 ===================
@@ -240,7 +274,21 @@ Python2か3かを見分ける
 * 3.0で組み込み関数から消えた
 * 3.2で復活した
 
-.. todo:: code
+.. code-block:: python
+
+   try:
+       callable = callable
+
+   except NameError:
+       def callable(obj):
+           return any(
+               "__call__" in klass.__dict__
+               for klass in type(obj).__mro__
+           )
+
+.. s6:: styles
+
+   'div': {fontSize:'85%'}
 
 .. s6:: effect slide
 
@@ -249,7 +297,23 @@ Python2か3かを見分ける
 
 * 3.0で組み込み関数から消えた
 
-.. todo:: code
+.. code-block:: python
+
+   try:
+       execfile = execfile
+
+   except NameError:
+       def execfile(filepath, _globals):
+           f = open(filepath, 'rt')
+           source = f.read()
+           code = compile(source, filepath, 'exec')
+           exec(code, _globals)
+
+execもPy3で文から式に変わりました。
+
+.. s6:: styles
+
+   'div': {fontSize:'80%'}
 
 .. s6:: effect slide
 
@@ -258,18 +322,22 @@ Python2か3かを見分ける
 
 * with文
 * print文とprint関数
-* u'' と b''
-
-.. todo:: code
 
 .. s6:: effect slide
+
 
 文法: with文
 =============
 
 * 2.5から__future__で提供、2.6から標準
 
-.. todo:: code
+.. code-block:: python
+
+   from __future__ import with_statement
+
+   with open('file.txt', 'r') as f:
+      print f.read()
+
 
 .. s6:: effect slide
 
@@ -278,24 +346,21 @@ Python2か3かを見分ける
 
 * 2.6から__future__でprint関数提供、3.0から標準
 
-.. todo:: code
+.. code-block:: pycon
+
+   >>> print('spam', 'egg', 'ham')
+   ('spam', 'egg', 'ham')
+
+Python2ではタプルをprintしてしまう
+
+.. code-block:: python
+
+   from __future__ import print_function
+
+2.5では使えない。print関数は仕様が多いので、互換機能実装はとても面倒。
 
 .. s6:: effect slide
 
-文法: u'' と b''
-=================
-
-* ``b''`` は2.6から使えるが無視される
-* ``u''`` は3.0で消滅、3.2で復活
-
-.. todo:: code
-
-.. s6:: effect slide
-
-
-.. todo:: 文法の違いとしてsphinx-intlで扱っているものだけでよいか？もっと一般的な何かを紹介したほうがよいか？割り算の整数？next()
-
-.. s6:: effect slide
 
 .. ================================================================
 .. How to compatible with both python2 and 3
