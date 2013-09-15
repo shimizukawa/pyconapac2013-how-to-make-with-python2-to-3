@@ -943,12 +943,16 @@ PyPIでこう表示される: sphinx-intl_
 * six 便利
 * 「Sphinxをはじめよう」売れ行き好調
 
+  .. figure:: images/book-learn-sphinx.jpg
+     :align: right
+
 .. s6:: styles
 
    'ul/li[0]': {display:'none'},
    'ul/li[1]': {display:'none'},
    'ul/li[2]': {display:'none'},
    'ul/li[3]': {display:'none'},
+   'ul/li[3]/div': {width:'25%'},
 
 .. s6:: actions
 
@@ -957,4 +961,13 @@ PyPIでこう表示される: sphinx-intl_
    ['ul/li[2]', 'fade in', '0.3'],
    ['ul/li[3]', 'fade in', '0.3'],
 
+
+ご清聴ありがとうございました
+=============================
+
+.. s6:: styles
+
+   'h2': {textAlign:'center', fontSize:'110%', margin:'30% auto', lineHeight:'1.5em', background:'none'}
+
+.. s6:: effect slide
 
