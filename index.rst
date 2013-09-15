@@ -52,10 +52,6 @@ Books
 
    ['ul/li[1]/ul/li', 'fade in', '0.3'],
 
-   * The books mention to Sphinx and Documentations.
-
-   * "Python Professional Programming" was already translated into
-     'simple chineese charactors' and will publish in June. (This is chneese
 
 中国語版
 ================
@@ -74,8 +70,8 @@ Sphinxをはじめよう
    Sphinxをはじめよう
 
 * 謎の動物
-* 世界初のSphinx本（多分）
-* オライリー・ジャパンさん
+* 世界初のSphinx本
+* オライリー・ジャパン
 * 電子書籍
 * 100P弱相当
 * 1,680円
@@ -128,36 +124,63 @@ What is sphinx-intl
   * potから言語別poの生成、更新、ビルド
   * transifexサポート: potからtransifex設定ファイルの生成
 
-.. todo:: sphinxとpotの絵
+.. figure:: images/translation.png
 
 .. sphinx-intlがなんのためのツールかということを端的に説明したいが、この文面だと長い：「sphinx-users.jpで使用している手法について紹介します。この方法は、ドキュメントの更新があれば自動的にpoファイルを更新してくれるし、翻訳文を更新すれば自動的にサイトを更新してくれる全自動の手法です。この手法の中核にあるのがsphinx-intlです。」
 
 .. s6:: effect slide
 
+.. s6:: styles
+
+   'ul[0]': {fontSize: '50%'},
+   'div[0]': {width: '80%', margin:'0.1em auto'},
+
 Motivation
 ===========
 
-* SphinxがPython2.5から3.3まで対応(3.0除く)
+* Sphinx-1.2の対応バージョン
+
+  * Python 2.5
+  * Python 2.6
+  * Python 2.7
+  * Python 3.1
+  * Python 3.2
+  * Python 3.3
+
 * sphinx-intlも同じバージョン対応が必要
 
 
 .. s6:: effect slide
 
-Detail of sphinx-intl
-======================
+Detail of sphinx-intl 1
+========================
 
-* sphinx-intlの行数:
+sphinx-intlの行数:
 
-  * 本体: 577行 （docstring含む）
-  * ドキュメント: 229行 （README等）
-  * テスト: 500行 （ユーティリティ含む）
-
-* sphinx-intlの構成:
-
-  * TODO: 簡単なツリー構造を書く
+* 本体: 577行 （docstring含む）
+* ドキュメント: 229行 （README等）
+* テスト: 500行 （ユーティリティ含む）
 
 .. s6:: effect slide
 
+
+Detail of sphinx-intl 2
+========================
+
+* sphinx-intlの構成::
+
+     /
+     ├─ README.rst
+     ├─ setup.cfg
+     ├─ setup.py
+     ├─ tox.ini
+     ├─ sphinx_intl/
+     │   ├─ __init__.py (3L)
+     │   ├─ __main__.py (5L)
+     │   └─ commands.py (575L)
+     └─ tests (497L)
+
+.. s6:: effect slide
 
 
 .. ================================================================
@@ -265,7 +288,7 @@ Pythonバージョン別で使い分ける:
 * Python2の str() は Python3の bytes()
 * Python2の unicode() は Python3の str()
 
-.. todo:: 使い方の例が必要?
+.. .. todo:: 使い方の例が必要?
 
 .. code-block:: python
 
@@ -436,7 +459,7 @@ Python3系のprint関数だと:
     print('done.')
 
 
-printを文ではなく式として解釈させる(2.6, 2.7)
+printを文ではなく式として解釈させる(2.5は非対応)
 
 .. code-block:: python
 
@@ -454,7 +477,7 @@ printを文ではなく式として解釈させる(2.6, 2.7)
 文法: print関数実装例
 ==========================
 
-しかし、print関数は仕様が多いので、互換機能実装はとても面倒。print関数実装例:
+print関数は仕様が多いので、互換機能実装はとても面倒
 
 .. code-block:: python
 
@@ -512,13 +535,23 @@ printを文ではなく式として解釈させる(2.6, 2.7)
    'p': {fontSize:'60%', margin: '0.5em'},
 
 
+ここまでのまとめ
+=================
+
+Python2と3両対応コード書くのって、大変
+
+.. s6:: styles
+
+   'p': {fontSize:'160%', margin: '1em 0.5em', textAlign: 'center'},
+
+
 .. ================================================================
-.. How to compatible with both python2 and 3
+.. How to keep compatibility with both python2 and 3
 .. ================================================================
 .. 20分
 
-How to compatible with both python2 and 3
-=========================================
+How to keep compatibility with both python2 and 3
+==================================================
 
 .. speech:: 2to3を使ってコード変換する方法と、sixを使って共通コードで動作させる方法があります。一長一短ありますが、どのようなときにどちらを使うべきかなど紹介します。
 
@@ -528,43 +561,138 @@ How to compatible with both python2 and 3
 
 .. s6:: effect slide
 
-How to compatible with both python2 and 3
-=========================================
+How to keep compatibility with both python2 and 3
+==================================================
+
+方法が3つくらい
 
 * 2to3を使う
-* 自力で両対応のコードを書く
+* 両対応コードを書く
 * sixを使う
+
+.. s6:: effect slide
 
 2to3を使う
 ===========
 
-Python3にはlib2to3がある
+* Python3にはlib2to3がある
+* Python2のコードをPython3に変換する
+* 1年ちょっと前のコードは2to3利用が多かった
 
-良いこと
+.. s6:: effect slide
 
-* Python2のコードを自動的にPython3コードに変換してくれる
-* 最新のsetuptoolsはsetup(2to3=True)でインストール時変換できる
+2to3を使う - Pros
+==================
 
-悪いこと
+Pros
+
+* Python2のコード資産を生かしてすぐPython3対応
+* setuptoolsはsetup(2to3=True)でインストール時変換
+
+.. s6:: effect slide
+
+2to3を使う - Cons
+==================
+
+Cons
 
 * 2to3は遅い
 * テスト実行のために毎回2to3が必要
 * Python3でだけエラーがある場合、変換後のコードで問題があると面倒
-  (どう変換されるか予測してPython2のコードを書く必要があったり)
+
+  * どう変換されるか予測してPython2のコードを書く必要がある
 
 .. s6:: effect slide
 
-両方で解釈できる方法で書く
+
+両対応コードを書く
 ==========================
 
 2to3を使わず、両方で解釈できる方法で書く。
 
-良いこと
+自力で、がんばる……
 
-* 2to3の問題点が発生しない！（変換無い、デバッグしやすい）
+.. code-block:: python
+
+   def print_(*args, **kwargs):
+       fp = kwargs.pop("file", sys.stdout)
+       if fp is None:
+           return
+       def write(data):
+           if not isinstance(data, basestring):
+               data = str(data)
+           fp.write(data)
+       want_unicode = False
+       sep = kwargs.pop("sep", None)
+       if sep is not None:
+           if isinstance(sep, unicode):
+               want_unicode = True
+           elif not isinstance(sep, str):
+               raise TypeError("sep must be None or a string")
+       end = kwargs.pop("end", None)
+       if end is not None:
+           if isinstance(end, unicode):
+               want_unicode = True
+           elif not isinstance(end, str):
+               raise TypeError("end must be None or a string")
+       if kwargs:
+           raise TypeError("invalid keyword arguments to print()")
+       if not want_unicode:
+           for arg in args:
+               if isinstance(arg, unicode):
+                   want_unicode = True
+                   break
+       if want_unicode:
+           newline = unicode("\n")
+           space = unicode(" ")
+       else:
+           newline = "\n"
+           space = " "
+       if sep is None:
+           sep = space
+       if end is None:
+           end = newline
+       for i, arg in enumerate(args):
+           if i:
+               write(sep)
+           write(arg)
+       write(end)
+
+.. **
+
+.. s6:: effect slide
+
+.. s6:: styles
+
+   'p[0]': {fontSize:'75%'},
+   'p[1]': {display:'none', fontSize:'75%'},
+   'div[0]': {display:'none', fontSize:'60%'},
+
+.. s6:: actions
+
+   ['p[1]', 'fade in', '0.3'],
+   ['div[0]', 'fade in', '0.3'],
+
+
+両対応コードを書く - Pros
+==========================
+
+Pros
+
+* 2to3の問題点が発生しない！
+
+  * 変換しなくてよい
+  * デバッグしやすい - **重要**
+
 * Python2.6以降なら大体Python3互換の書き方ができる
 
-悪いこと
+.. s6:: effect slide
+
+
+両対応コードを書く - Cons
+==========================
+
+Cons
 
 * Python2.4対応は絶望的（可能だけど）
 * Python2.5を投げ捨てたくなる
@@ -572,12 +700,25 @@ Python3にはlib2to3がある
 
 .. s6:: effect slide
 
+.. s6:: styles
+
+   'ul/li[0]': {display:'none'},
+   'ul/li[1]': {display:'none'},
+   'ul/li[2]': {display:'none'},
+
+.. s6:: actions
+
+   ['ul/li[0]', 'fade in', '0.3'],
+   ['ul/li[1]', 'fade in', '0.3'],
+   ['ul/li[2]', 'fade in', '0.3'],
+
+
 sphinx-intlはどうしたか？
 ==========================
 
 * 最初は自力で両対応コードを書いていた
-* printとexecの互換実装が面倒
-* エクササイズのつもりだったけど面倒になった
+* エクササイズのつもりだった
+* printとexecの互換実装が大変だった
 * 諦めてsixを導入
 
 .. s6:: effect slide
@@ -585,18 +726,28 @@ sphinx-intlはどうしたか？
 six
 =====
 
-* 2013/9/1: 1.4 released
+six_ (1.4.1 release  2013/9/2)
+
 * Python2.4から3.3まで対応
 * 移動したり名前が変わったり消えたり増えたりしたパッケージ、モジュールの互換レイヤ
-* 移動や名前変更は内部でバージョン判別して呼び直している（要コードサンプル）
-* 消えたり増えたりは、同一機能を提供（要コードサンプル）
+* 移動や名前変更は内部でバージョン判別して呼び直している（movesパッケージ）
+* 消えたり増えたりは、同一機能を提供
+
+.. _six: https://pypi.python.org/pypi/six
 
 .. s6:: effect slide
+
+.. s6:: styles
+
+   'ul/li': {fontSize: '80%'},
 
 避けられない自力対応
 ====================
 
-* sixでも提供されていないexecfileは自力で対応
+* sixでも提供されていないものは自力で対応
+
+  * execfile
+  * 他にもあるかも?
 
 .. s6:: effect slide
 
@@ -641,28 +792,31 @@ six
 パッケージングツールの変遷
 ===================================
 
+ここまでがPyCon JP 2011の頃。
+
 1. Python標準はdistutils、色々足りないしeasy_install的なのが無い
 2. setuptoolsがeasy_installを提供
 3. pipはeasy_installより便利なコマンドを提供
 4. setuptoolsをPython3対応させたdistributeがデファクトに
 
-ここまでがPyCon JP 2011の頃。
 
 .. s6:: effect slide
 
 2012年
 ======
 
+これがPyCon JP 2012の前後。
+
 * setuptoolsはもう更新されてないから ``distribute`` 使おう！
 * Python3.3で提供される ``packaging`` を使おう！
 * packagingがPython3.3リリース直前に消滅
-
-これがPyCon JP 2012の前後。
 
 .. s6:: effect slide
 
 2013年
 ======
+
+PyCon APAC 2013の頃
 
 * ``distlib`` 登場。packagingで不足していた下位レイヤ。Python3.4同梱予定。
 * ``wheel`` 登場。eggに代わるPython標準のバイナリ形式。distlibと合流。
@@ -676,6 +830,11 @@ six
 
 .. s6:: effect slide
 
+.. s6:: styles
+
+   'p': {fontSize: '60%'},
+   'ul/li': {fontSize: '90%'},
+
 Python2と3で動作するsetup.pyを作る
 ===================================
 
@@ -684,6 +843,88 @@ Python2と3で動作するsetup.pyを作る
 * 特定バージョンの場合、依存パッケージのバージョンを指定する
 
 .. s6:: effect slide
+
+
+setup.pyはPython2,3互換コードで書く
+====================================
+
+* 2to3は使えない
+* setup.pyは自力でがんばって互換性を維持しよう
+
+.. s6:: effect slide
+
+特定バージョンの場合だけ依存パッケージをインストールする
+=========================================================
+
+.. code-block:: python
+
+   requires = ['six', 'polib', 'sphinx']
+
+   if sys.version_info < (2, 7):
+       requires.append('ordereddict')
+
+
+.. s6:: effect slide
+
+
+特定バージョンの場合、依存パッケージのバージョンを指定する
+===========================================================
+
+.. code-block:: python
+
+   extras = {}
+
+   if sys.version_info < (2, 6):
+       extras['transifex'] = ['transifex_client==0.8']
+   else:
+       extras['transifex'] = ['transifex_client']
+
+
+.. s6:: effect slide
+
+.. s6:: styles
+
+   'div': {fontSize: '75%'},
+
+
+対応しているバージョンは書こう
+==============================
+
+.. code-block:: python
+
+   setup(
+       ...
+       classifiers=[
+           "Development Status :: 4 - Beta",
+           "Environment :: Other Environment",
+           "License :: OSI Approved :: BSD License",
+           "Topic :: Documentation",
+           "Topic :: Software Development :: Documentation",
+           "Topic :: Text Processing :: General",
+           "Topic :: Utilities",
+           "Programming Language :: Python",
+           "Programming Language :: Python :: 2",
+           "Programming Language :: Python :: 2.5",
+           "Programming Language :: Python :: 2.6",
+           "Programming Language :: Python :: 2.7",
+           "Programming Language :: Python :: 3",
+           "Programming Language :: Python :: 3.1",
+           "Programming Language :: Python :: 3.2",
+           "Programming Language :: Python :: 3.3",
+       ],
+       ...
+   )
+
+PyPIでこう表示される: sphinx-intl_
+
+.. _sphinx-intl: https://pypi.python.org/pypi/sphinx-intl
+
+.. s6:: effect slide
+
+.. s6:: styles
+
+   'div': {fontSize: '50%'},
+
 
 まとめ
 =======
@@ -697,5 +938,23 @@ Python2と3で動作するsetup.pyを作る
 まとめ
 =======
 
-* 
+* Python2.5はそろそろ消滅すべき
+* 2to3はデバッグ大変
+* six 便利
+* 「Sphinxをはじめよう」売れ行き好調
+
+.. s6:: styles
+
+   'ul/li[0]': {display:'none'},
+   'ul/li[1]': {display:'none'},
+   'ul/li[2]': {display:'none'},
+   'ul/li[3]': {display:'none'},
+
+.. s6:: actions
+
+   ['ul/li[0]', 'fade in', '0.3'],
+   ['ul/li[1]', 'fade in', '0.3'],
+   ['ul/li[2]', 'fade in', '0.3'],
+   ['ul/li[3]', 'fade in', '0.3'],
+
 
